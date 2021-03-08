@@ -146,6 +146,7 @@ class Alien(Sprite):   # INHERITS from SPRITE
         self.rect.y = self.y = y
         self.x = float(self.rect.x)
         self.speed = speed
+        self.counter = 0
 
     def check_edges(self):
         r, rscreen = self.rect, self.screen.get_rect()
@@ -167,9 +168,11 @@ class Alien(Sprite):   # INHERITS from SPRITE
                 self.reallydead = True
                 self.parent.remove(self)
                 self.timer.reset()
-        delta = self.settings.alien_speed * self.settings.fleet_direction
-        self.rect.x += delta
-        self.x = self.rect.x
+        if self.counter % self.settings.alien_update_every == 0:
+            delta = self.settings.alien_speed * self.settings.fleet_direction
+            self.rect.x += delta
+            self.x = self.rect.x
+        self.counter += 1
 
     def draw(self):
         image = self.timer.imagerect()
